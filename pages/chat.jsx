@@ -1,12 +1,29 @@
 import { Box, Button, TextField } from '@skynexui/components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js'
 import appConfig from '../config.json';
 import Header from '../src/components/Header';
 import MessageList from '../src/components/MessageList';
 
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI4MjAwNywiZXhwIjoxOTU4ODU4MDA3fQ.vmigzEb795WGRSsMVA_1WSbcUn13DUvNnhSh3A1EFc0'
+const SUPABASE_URL = 'https://qdqsshfhexljqmrzhhba.supabase.co'
+const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
+
+// tela de loading antes do bando mandar as mensagems
+// hover com perfil do usuário
+// botao enviar sticker anexo etc
+
 export default function ChatPage() {
   const [ message, setMessage ] = useState('');
   const [ messagesList, setMessagesList ] = useState([]);
+
+  useEffect(() => {
+    supabaseClient
+      .from('messagesList')
+      .select('*')
+      .order('id', { ascending: false })
+      .then( ({ data }) => setMessagesList(data))
+  }, [] )
 
   function handleChange(event) {
     setMessage(event.target.value)
@@ -16,18 +33,23 @@ export default function ChatPage() {
     if (event.key === 'Enter') {
       event.preventDefault()
       sendMessage(message)
+      setMessage('')
     }
   }
   
   function sendMessage(newMensagem) {
     const message = {
-      id: messagesList.length + 1,
-      from: 'deMenezes',
+      // id: messagesList.length + 1, // Usando ID do Supabase
+      from: 'aaamenezes',
       text: newMensagem
     }
 
-    setMessagesList([ message, ...messagesList ])
-    setMessage('')
+    supabaseClient
+      .from('messagesList')
+      .insert([ message ])
+      .then( ({ data }) => {
+        setMessagesList([ data[0], ...messagesList ])
+      })
   }
 
   return (
