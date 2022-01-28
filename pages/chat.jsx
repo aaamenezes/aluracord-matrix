@@ -19,8 +19,17 @@ export default function ChatPage() {
   const [ messagesList, setMessagesList ] = useState([]);
 
   useEffect(() => {
-    updateMessages()
+    updateDBMessages()
+    updateScreenMessages()
   }, [] )
+
+  function updateDBMessages() {
+    supabaseClient
+      .from('messagesList')
+      .on('INSERT', updateScreenMessages)
+      .on('DELETE', updateScreenMessages)
+      .subscribe()
+  }
 
   function handleChange(event) {
     setMessage(event.target.value)
@@ -34,7 +43,7 @@ export default function ChatPage() {
     }
   }
 
-  function updateMessages() {
+  function updateScreenMessages() {
     supabaseClient
       .from('messagesList')
       .select('*')
@@ -62,7 +71,7 @@ export default function ChatPage() {
       .from('messagesList')
       .delete(false)
       .match({ id })
-      .then(() => updateMessages())
+      .then(() => updateScreenMessages())
   }
 
   return (
