@@ -4,12 +4,12 @@ import { createClient } from '@supabase/supabase-js'
 import appConfig from '../config.json';
 import Header from '../src/components/Header';
 import MessageList from '../src/components/MessageList';
+import Loading from '../src/components/Loading';
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI4MjAwNywiZXhwIjoxOTU4ODU4MDA3fQ.vmigzEb795WGRSsMVA_1WSbcUn13DUvNnhSh3A1EFc0'
 const SUPABASE_URL = 'https://qdqsshfhexljqmrzhhba.supabase.co'
 const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
-// tela de loading antes do bando mandar as mensagems
 // hover com perfil do usuário
 // botao enviar sticker anexo etc
 
@@ -90,7 +90,16 @@ export default function ChatPage() {
           }}
         >
 
-          <MessageList messages={messagesList} setMessagesList={setMessagesList} />
+          {
+            messagesList.length === 0
+              ? <Loading />
+              : (
+                <MessageList
+                  messages={messagesList}
+                  setMessagesList={setMessagesList}
+                />
+              )
+          }
 
           <Box
             as="form"
