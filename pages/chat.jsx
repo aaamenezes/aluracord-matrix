@@ -10,19 +10,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 const SUPABASE_URL = 'https://qdqsshfhexljqmrzhhba.supabase.co'
 const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
-// hover com perfil do usuário
-// botao enviar sticker anexo etc
-
 export default function ChatPage() {
   const [ message, setMessage ] = useState('');
   const [ messagesList, setMessagesList ] = useState([]);
 
   useEffect(() => {
-    supabaseClient
-      .from('messagesList')
-      .select('*')
-      .order('id', { ascending: false })
-      .then( ({ data }) => setMessagesList(data))
+    updateMessages()
   }, [] )
 
   function handleChange(event) {
@@ -35,6 +28,14 @@ export default function ChatPage() {
       sendMessage(message)
       setMessage('')
     }
+  }
+
+  function updateMessages() {
+    supabaseClient
+      .from('messagesList')
+      .select('*')
+      .order('id', { ascending: false })
+      .then( ({ data }) => setMessagesList(data))
   }
   
   function sendMessage(newMensagem) {
@@ -52,13 +53,24 @@ export default function ChatPage() {
       })
   }
 
+  function handleRemove(id) {
+    supabaseClient
+      .from('messagesList')
+      .delete(false)
+      .match({ id })
+      .then(() => updateMessages())
+  }
+
   return (
     <Box
       styleSheet={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: `url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)`,
-        backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
+        backgroundColor: appConfig.theme.colors.primary[100],
+        backgroundImage: `url(/images/caves.gif)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'multiply',
         color: appConfig.theme.colors.neutrals['000']
       }}
     >
@@ -97,6 +109,7 @@ export default function ChatPage() {
                 <MessageList
                   messages={messagesList}
                   setMessagesList={setMessagesList}
+                  handleRemove={handleRemove}
                 />
               )
           }
