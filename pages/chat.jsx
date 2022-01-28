@@ -5,12 +5,16 @@ import appConfig from '../config.json';
 import Header from '../src/components/Header';
 import MessageList from '../src/components/MessageList';
 import Loading from '../src/components/Loading';
+import { useRouter } from 'next/router';
+import StickerButton from '../src/components/StickerButton';
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI4MjAwNywiZXhwIjoxOTU4ODU4MDA3fQ.vmigzEb795WGRSsMVA_1WSbcUn13DUvNnhSh3A1EFc0'
 const SUPABASE_URL = 'https://qdqsshfhexljqmrzhhba.supabase.co'
 const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
 export default function ChatPage() {
+  const router = useRouter();
+  const userName = router.query.user;
   const [ message, setMessage ] = useState('');
   const [ messagesList, setMessagesList ] = useState([]);
 
@@ -38,11 +42,11 @@ export default function ChatPage() {
       .then( ({ data }) => setMessagesList(data))
   }
   
-  function sendMessage(newMensagem) {
+  function sendMessage(newMessage) {
     const message = {
       // id: messagesList.length + 1, // Usando ID do Supabase
-      from: 'aaamenezes',
-      text: newMensagem
+      from: userName,
+      text: newMessage
     }
 
     supabaseClient
@@ -99,6 +103,7 @@ export default function ChatPage() {
             flexDirection: 'column',
             borderRadius: '5px',
             padding: '16px',
+            wordBreak: 'break-word'
           }}
         >
 
@@ -138,11 +143,15 @@ export default function ChatPage() {
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
+            <StickerButton onStickerClick={sticker => {
+              sendMessage(`:sticker: ${sticker}`)
+            }} />
             <Button
               type='button'
               label='Send'
               styleSheet={{
                 height: '100%',
+                minWidth: '60px',
               }}
               onClick={() => sendMessage(message)}
             />

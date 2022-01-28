@@ -1,7 +1,7 @@
 import { Box, Button, Image, Text } from "@skynexui/components";
 import appConfig from '../../config.json'
 
-export default function MessageList({ messages, setMessagesList, handleRemove }) {
+export default function MessageList({ messages, handleRemove }) {
   return (
     <>
       <Box
@@ -64,15 +64,25 @@ export default function MessageList({ messages, setMessagesList, handleRemove })
                   </Text>
                 </Box>
 
-                <Box>{message.text}</Box>
+                <Box>
+                  {
+                    message.text.startsWith(':sticker:')
+                      ? (
+                        <Image
+                          src={message.text.replace(':sticker:', '')}
+                          styleSheet={{
+                            maxWidth: '120px',
+                          }}
+                        />
+                      )
+                      : message.text
+                  }
+                </Box>
 
                 <button
                   className='close-button'
                   type='button'
                   onClick={() => handleRemove(message.id)}
-                  style={{
-                    
-                  }}
                 >
                   &times;
                 </button>

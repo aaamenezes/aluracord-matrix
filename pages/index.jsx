@@ -2,31 +2,13 @@ import { Box, Button, Text, TextField, Image } from '@skynexui/components'
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import appConfig from '../config.json';
-
-function Title({ tag, children }) {
-  const Tag = tag || 'h2'
-
-  return (
-    <>
-      <Tag>{children}</Tag>
-
-      <style jsx>{`
-        ${Tag} {
-          color: ${appConfig.theme.colors.neutrals['000']};
-          font-size: 24px;
-          font-weight: 600;
-        }
-      `}</style>
-    </>
-  )
-}
+import Title from '../src/components/Title';
 
 export default function HomePage() {
   const router = useRouter();
   const [ userName, setUserName ] = useState('');
   const userURL = `https://api.github.com/users/${userName}`
   const [ userBio, setUserBio ] = useState('');
-  const [ userCompany, setUserCompany ] = useState('');
   
   function handleChange(event) {
     setUserName(event.target.value)
@@ -34,10 +16,7 @@ export default function HomePage() {
     if (event.target.value.length > 2) {
       fetch(userURL)
         .then(response => response.json())
-        .then(data => {
-          setUserBio(data.bio)
-          setUserCompany(data.company)
-        })
+        .then(data => setUserBio(data.bio))
     }
   }
 
@@ -76,7 +55,7 @@ export default function HomePage() {
             as="form"
             onSubmit={event => {
               event.preventDefault()
-              router.push('/chat')
+              router.push(`/chat?user=${userName}`)
             }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
