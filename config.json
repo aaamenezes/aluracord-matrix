@@ -42,6 +42,26 @@
       }
     }
   },
+  "interfaceColors": [
+    "#FDCFE9",
+    "#D32C60",
+    "#9EDCC3",
+    "#3A7C73",
+    "#F3F8FC",
+    "#121E2F",
+    "#3A3C52",
+    "#771412",
+    "#570B0E",
+    "#3B57C4",
+    "#061C81",
+    "#B2C2E8",
+    "#F9B140",
+    "#A8431A",
+    "#EAADE5",
+    "#894D96",
+    "#C08D37",
+    "#D5751B"
+  ],
   "stickers": [
     "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_1.png",
     "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_2.png",

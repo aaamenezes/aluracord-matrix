@@ -10,6 +10,7 @@ export default function HomePage({ cavesData }) {
   const [ character, setCharacter ] = useState('');
   const [ characterID, setCharacterID ] = useState('');
   const [ backgroundImage, setBackgroundImage ] = useState('/images/caves.gif');
+  const [ backgroundColor, setBackgroundColor ] = useState(appConfig.theme.colors.primary[100]);
 
   function handleChange(event) {
     const { value } = event.target
@@ -29,13 +30,17 @@ export default function HomePage({ cavesData }) {
     }
   }
 
+  function handleColor(event) {
+    
+  }
+
   return (
     <Box
       styleSheet={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: appConfig.theme.colors.primary[100],
+        backgroundColor: backgroundColor,
         backgroundImage: `url(${backgroundImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -52,7 +57,8 @@ export default function HomePage({ cavesData }) {
             xs: 'column',
             sm: 'row',
           },
-          minWidth: '400px',
+          width: '95%',
+          maxWidth: '525px',
           borderRadius: '5px',
           padding: {
             xs: '32px',
@@ -91,6 +97,41 @@ export default function HomePage({ cavesData }) {
             character={character}
             handleChange={handleChange}
           />
+
+          <Box
+          styleSheet={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(26px, 1fr))',
+            gridGap: '12px',
+            width: '100%',
+            margin: '1rem 0'
+          }}
+          >
+            {
+              appConfig.interfaceColors.map(color => (
+                <Button
+                  key={color.id}
+                  onClick={event => setBackgroundColor(event.target.value)}
+                  value={color}
+                  styleSheet={{
+                    width: '1rem',
+                    height: '1rem',
+                    backgroundColor: color,
+                    hover: {
+                      transform: 'scale(1.3)',
+                      backgroundColor: color
+                    },
+                    active: { backgroundColor: color },
+                    focus: { backgroundColor: color }
+                  }}
+                />
+              ))
+            }
+          </Box>
 
           <Button
             type='submit'
