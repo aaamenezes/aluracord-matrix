@@ -4,12 +4,11 @@ import React from 'react'
 export default function () {
   return (
     <>
-      <img src='/images/peas.png' />
+      <img src='/images/kiki.png' />
 
       <style jsx>{`
         img {
           display: block;
-          width: 200px;
           margin: 0 auto;
           animation: rotate infinite 2s linear;
         }
