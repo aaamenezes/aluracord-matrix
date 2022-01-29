@@ -25,8 +25,8 @@ export default function MessageList({ messages, handleRemove, character }) {
                 styleSheet={{
                   position: 'relative',
                   borderRadius: '5px',
-                  padding: '6px',
-                  marginBottom: '12px',
+                  padding: '12px',
+                  marginBottom: '18px',
                   hover: {
                     backgroundColor: appConfig.theme.colors.neutrals[700],
                   }
@@ -35,14 +35,16 @@ export default function MessageList({ messages, handleRemove, character }) {
                 <Box
                   className="avatar-box"
                   styleSheet={{
-                    marginBottom: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '16px',
                   }}
                 >
                   <Image
                     className="avatar-image"
                     styleSheet={{
-                      width: '20px',
-                      height: '20px',
+                      width: '30px',
+                      height: '30px',
                       borderRadius: '50%',
                       display: 'inline-block',
                       marginRight: '8px',
