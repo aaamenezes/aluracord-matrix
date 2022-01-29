@@ -14,7 +14,7 @@ const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
 export default function ChatPage() {
   const router = useRouter();
-  const userName = router.query.user;
+  const { character, backgroundImage } = router.query;
   const [ message, setMessage ] = useState('');
   const [ messagesList, setMessagesList ] = useState([]);
 
@@ -54,7 +54,7 @@ export default function ChatPage() {
   function sendMessage(newMessage) {
     const message = {
       // id: messagesList.length + 1, // Usando ID do Supabase
-      from: userName,
+      from: character,
       text: newMessage
     }
 
@@ -79,7 +79,7 @@ export default function ChatPage() {
       styleSheet={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         backgroundColor: appConfig.theme.colors.primary[100],
-        backgroundImage: `url(/images/caves.gif)`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -96,7 +96,8 @@ export default function ChatPage() {
           borderRadius: '5px',
           backgroundColor: appConfig.theme.colors.neutrals[700],
           height: '100%',
-          maxWidth: '95%',
+          width: '95%',
+          maxWidth: '768px',
           maxHeight: '95vh',
           padding: '32px',
         }}
@@ -124,6 +125,7 @@ export default function ChatPage() {
                   messages={messagesList}
                   setMessagesList={setMessagesList}
                   handleRemove={handleRemove}
+                  character={character}
                 />
               )
           }

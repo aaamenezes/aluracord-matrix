@@ -66,7 +66,7 @@ export default function HomePage({ cavesData }) {
           as="form"
           onSubmit={event => {
             event.preventDefault()
-            router.push(`/chat?user=${character}`)
+            router.push(`/chat?character=${character}&backgroundImage=${backgroundImage}`)
           }}
           styleSheet={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',

@@ -1,7 +1,7 @@
 import { Box, Button, Image, Text } from "@skynexui/components";
 import appConfig from '../../config.json'
 
-export default function MessageList({ messages, handleRemove }) {
+export default function MessageList({ messages, handleRemove, character }) {
   return (
     <>
       <Box
@@ -79,13 +79,17 @@ export default function MessageList({ messages, handleRemove }) {
                   }
                 </Box>
 
-                <button
-                  className='close-button'
-                  type='button'
-                  onClick={() => handleRemove(message.id)}
-                >
-                  &times;
-                </button>
+                {
+                  message.from === character && (
+                    <button
+                      className='remove-button'
+                      type='button'
+                      onClick={() => handleRemove(message.id)}
+                    >
+                      &times;
+                    </button>
+                  )
+                }
               </Text>
             </div>
           ))
@@ -93,7 +97,7 @@ export default function MessageList({ messages, handleRemove }) {
       </Box>
 
       <style jsx>{`
-        .close-button {
+        .remove-button {
           position: absolute;
           top: 4px;
           right: 4px;
@@ -105,13 +109,13 @@ export default function MessageList({ messages, handleRemove }) {
           cursor: pointer;
         }
 
-        .close-button:hover {
+        .remove-button:hover {
           border: 1px solid ${appConfig.theme.colors.neutrals[300]};
           transform: scale(1.2);
           transition: .3s;
         }
 
-        .message-item:hover .close-button {
+        .message-item:hover .remove-button {
           display: block !important;
         }
       `}</style>
