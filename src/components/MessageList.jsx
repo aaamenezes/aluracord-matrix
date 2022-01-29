@@ -1,7 +1,7 @@
 import { Box, Button, Image, Text } from "@skynexui/components";
 import appConfig from '../../config.json'
 
-export default function MessageList({ messages, handleRemove, character }) {
+export default function MessageList({ messages, handleRemove, character, backgroundColor }) {
   return (
     <>
       <Box
@@ -39,7 +39,18 @@ export default function MessageList({ messages, handleRemove, character }) {
                     marginBottom: '16px',
                   }}
                 >
-                  <Image
+                  <Box
+                    styleSheet={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      display: 'inline-block',
+                      marginRight: '8px',
+                      backgroundColor: backgroundColor
+                    }}
+                  />
+
+                  {/* <Image
                     className="avatar-image"
                     styleSheet={{
                       width: '30px',
@@ -48,8 +59,8 @@ export default function MessageList({ messages, handleRemove, character }) {
                       display: 'inline-block',
                       marginRight: '8px',
                     }}
-                    // src={`https://github.com/${message.from}.png`}
-                  />
+                    src={`https://github.com/${message.from}.png`}
+                  /> */}
                   <Text tag="strong">
                     {message.from}
                   </Text>

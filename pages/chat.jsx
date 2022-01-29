@@ -14,7 +14,7 @@ const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
 export default function ChatPage({ cavesData }) {
   const router = useRouter();
-  const { character, backgroundImage } = router.query;
+  const { character, backgroundImage, backgroundColor } = router.query;
   const [ message, setMessage ] = useState('');
   const [ messagesList, setMessagesList ] = useState([]);
 
@@ -78,7 +78,7 @@ export default function ChatPage({ cavesData }) {
     <Box
       styleSheet={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        backgroundColor: appConfig.theme.colors.primary[100],
+        backgroundColor: `#${backgroundColor}`,
         backgroundImage: `url(${backgroundImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -126,6 +126,7 @@ export default function ChatPage({ cavesData }) {
                   setMessagesList={setMessagesList}
                   handleRemove={handleRemove}
                   character={character}
+                  backgroundColor={`#${backgroundColor}`}
                 />
               )
           }
