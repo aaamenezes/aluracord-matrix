@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Text, Image } from '@skynexui/components';
 import appConfig from '../../config.json';
+import { useRouter } from 'next/router';
 
-export default function StickerButton({ onStickerClick }) {
-  const [isOpen, setOpenState] = React.useState('');
+export default function StickerButton({ cavesData, onStickerClick }) {
+  const [ isOpen, setOpenState ] = useState('');
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  const character = cavesData.find(character => character.id === id);
 
   return (
     <Box
@@ -71,26 +77,31 @@ export default function StickerButton({ onStickerClick }) {
               overflow: 'scroll',
             }}
           >
-            {appConfig.stickers.map(sticker => (
-              <Text
-                onClick={() => onStickerClick(sticker)}
-                tag="li" key={sticker}
-                styleSheet={{
-                  width: '50%',
-                  borderRadius: '5px',
-                  padding: '10px',
-                  cursor: 'pointer',
-                  focus: {
-                    backgroundColor: appConfig.theme.colors.neutrals[600],
-                  },
-                  hover: {
-                    backgroundColor: appConfig.theme.colors.neutrals[600],
-                  }
-                }}
-              >
-                <Image src={sticker} />
-              </Text>
-            ))}
+            {character.stickerImages.map(sticker => {
+              const stickerImageURL = `https://diegochagas.com/saint-seiya-api/${sticker}`
+
+              return (
+                <Text
+                  key={sticker.id}
+                  onClick={() => onStickerClick(stickerImageURL)}
+                  tag="li" key={sticker}
+                  styleSheet={{
+                    width: '50%',
+                    borderRadius: '5px',
+                    padding: '10px',
+                    cursor: 'pointer',
+                    focus: {
+                      backgroundColor: appConfig.theme.colors.neutrals[600],
+                    },
+                    hover: {
+                      backgroundColor: appConfig.theme.colors.neutrals[600],
+                    }
+                  }}
+                >
+                  <Image src={stickerImageURL} />
+                </Text>
+              )
+            })}
           </Box>
         </Box>
       )}

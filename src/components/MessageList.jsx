@@ -18,9 +18,8 @@ export default function MessageList({ messages, handleRemove, character }) {
 
         {
           messages.map(message => (
-            <div className="message-item">
+            <div className="message-item" key={message.id}>
               <Text
-                key={message.id}
                 tag="li"
                 styleSheet={{
                   position: 'relative',
@@ -49,7 +48,7 @@ export default function MessageList({ messages, handleRemove, character }) {
                       display: 'inline-block',
                       marginRight: '8px',
                     }}
-                    src={`https://github.com/${message.from}.png`}
+                    // src={`https://github.com/${message.from}.png`}
                   />
                   <Text tag="strong">
                     {message.from}
@@ -73,7 +72,7 @@ export default function MessageList({ messages, handleRemove, character }) {
                         <Image
                           src={message.text.replace(':sticker:', '')}
                           styleSheet={{
-                            maxWidth: '120px',
+                            maxWidth: '400px',
                           }}
                         />
                       )

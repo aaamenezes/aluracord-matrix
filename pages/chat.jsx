@@ -12,7 +12,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 const SUPABASE_URL = 'https://qdqsshfhexljqmrzhhba.supabase.co'
 const supabaseClient = createClient( SUPABASE_URL, SUPABASE_ANON_KEY )
 
-export default function ChatPage() {
+export default function ChatPage({ cavesData }) {
   const router = useRouter();
   const { character, backgroundImage } = router.query;
   const [ message, setMessage ] = useState('');
@@ -154,9 +154,13 @@ export default function ChatPage() {
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
-            <StickerButton onStickerClick={sticker => {
-              sendMessage(`:sticker: ${sticker}`)
-            }} />
+            <StickerButton
+              cavesData={cavesData}
+              onStickerClick={sticker => {
+                sendMessage(`:sticker: ${sticker}`)
+              }}
+              character={character}
+            />
             <Button
               type='button'
               label='Send'
@@ -171,4 +175,21 @@ export default function ChatPage() {
       </Box>
     </Box>
   )
+}
+
+export async function getStaticProps() {
+  const response = await fetch('https://saint-seiya-api.herokuapp.com/api/characters')
+  const allData = await response.json()
+  const cavesData = await allData
+    .filter(character => character.name)
+    .map(character => {
+      const { id, name, image } = character
+      const stickerImages = character.cloths.map(cloth => cloth.image)
+
+      return { id, name, image, stickerImages }
+    })
+
+  return {
+    props: { cavesData }
+  }
 }

@@ -7,8 +7,6 @@ export default function Select({ cavesData, character, handleChange }) {
     <option key={character.id} value={character.name} />
   ))
 
-  console.log('cavesData[389]:', cavesData[389])
-
   return (
     <>
       <datalist id="caves-characteres">{dataListList}</datalist>

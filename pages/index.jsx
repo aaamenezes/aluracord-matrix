@@ -8,6 +8,7 @@ import Title from '../src/components/Title';
 export default function HomePage({ cavesData }) {
   const router = useRouter();
   const [ character, setCharacter ] = useState('');
+  const [ characterID, setCharacterID ] = useState('');
   const [ backgroundImage, setBackgroundImage ] = useState('/images/caves.gif');
 
   function handleChange(event) {
@@ -19,6 +20,7 @@ export default function HomePage({ cavesData }) {
     ))
 
     if (currentChatacter) {
+      setCharacterID(currentChatacter.id)
       const currentChatacterImage = currentChatacter.image
       
       const imageURL = `https://diegochagas.com/saint-seiya-api/${currentChatacterImage}`
@@ -66,7 +68,7 @@ export default function HomePage({ cavesData }) {
           as="form"
           onSubmit={event => {
             event.preventDefault()
-            router.push(`/chat?character=${character}&backgroundImage=${backgroundImage}`)
+            router.push(`/chat?character=${character}&id=${characterID}&backgroundImage=${backgroundImage}`)
           }}
           styleSheet={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -109,8 +111,15 @@ export default function HomePage({ cavesData }) {
 
 export async function getStaticProps() {
   const response = await fetch('https://saint-seiya-api.herokuapp.com/api/characters')
-  const rawData = await response.json()
-  const cavesData = await rawData.filter(character => character.name)
+  const allData = await response.json()
+  const cavesData = await allData
+    .filter(character => character.name)
+    .map(character => {
+      const { id, name, image } = character
+      const stickerImages = character.cloths.map(cloth => cloth.image)
+
+      return { id, name, image, stickerImages }
+    })
 
   return {
     props: { cavesData }
